@@ -1,0 +1,36 @@
+version: '3.4'
+
+networks:
+    deploy-guide-dev:
+        driver: bridge
+
+services:
+  filestoragewebapi:
+    #image: ${DOCKER_REGISTRY-}filestoragewebapi
+    container_name: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+    - "80:80"
+    networks:
+    - deploy-guide-dev
+    depends_on:
+    - postgres-db
+  postgres-db:
+    container_name: postgres
+    image: postgres:latest
+    environment:
+       POSTGRES_USER: thienlao21
+       POSTGRES_PASSWORD: lobzik123
+       POSTGRES_DB: filesStorage
+    ports:
+    - "5432:5432"
+    networks:
+    - deploy-guide-dev
+    volumes:
+        - postgres-data:/var/lib/postgresql/data
+volumes:
+  postgres-data:
+
+  
